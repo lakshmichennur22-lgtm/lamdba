@@ -40,7 +40,7 @@ pipeline {
 
         stage('Archive Build Artifacts') {
             steps {
-                archiveArtifacts artifacts: 'build/**', fingerprint: true
+                archiveArtifacts artifacts: 'front-end/build/**', fingerprint: true
             }
         }
     }
