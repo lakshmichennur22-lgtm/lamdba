@@ -9,3 +9,4 @@ variable "environment"       { default = "dev" }
 variable "location"          { default = "india" }
 variable "location_short"    { default = "aps1" }
 variable "blockcode"         { default = "sms01" }
+variable "db_password"       
