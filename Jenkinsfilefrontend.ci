@@ -24,7 +24,7 @@ pipeline {
                 sh '''
                     cd front-end
                     npm install
-                    
+
                 '''
             }
         }
@@ -40,6 +40,7 @@ pipeline {
 
         stage('Archive Build Artifacts') {
             steps {
+                cd front-end
                 archiveArtifacts artifacts: 'build/**', fingerprint: true
             }
         }
