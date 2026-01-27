@@ -11,7 +11,7 @@ pipeline {
         stage('Download Build Artifacts') {
             steps {
                 copyArtifacts(
-                    projectName: 'Infosys-leave-frontend-ci',
+                    projectName: 'student_frontendci',
                     selector: lastSuccessful()
                 )
             }
