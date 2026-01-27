@@ -24,7 +24,7 @@ pipeline {
                      credentialsId: 'Adithya']
                 ]) {
                     sh '''
-                        aws s3 sync build/ s3://$S3_BUCKET --delete
+                        aws s3 sync front-end/build/ s3://$S3_BUCKET --delete
                     '''
                 }
             }
