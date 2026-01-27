@@ -12,7 +12,7 @@ pipeline {
         stage('Verify Node & NPM') {
             steps {
                 sh '''
-                    cd frontend
+                    cd front-end
                     node -v
                     npm -v
                 '''
