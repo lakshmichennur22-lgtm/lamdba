@@ -2,46 +2,52 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION         = "us-east-1"
-        AWS_DEFAULT_REGION = "us-east-1"
-        CLUSTER_NAME       = "insur-ptl-dev-use-ecs"
-        SERVICE_NAME       = "insur-ptl-dev-use-frontend"
+        AWS_DEFAULT_REGION = 'us-east-1'
+        S3_BUCKET = 'stu-ptl-dev-use-frontend'
     }
 
     stages {
 
-        stage('Deploy to ECS') {
+        stage('Download Build Artifacts') {
             steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'Adithya'
-                ]]) {
+                copyArtifacts(
+                    projectName: 'Infosys-leave-frontend-ci',
+                    selector: lastSuccessful()
+                )
+            }
+        }
 
+        stage('Deploy to S3') {
+            steps {
+                withCredentials([
+                    [$class: 'AmazonWebServicesCredentialsBinding',
+                     credentialsId: 'Adithya']
+                ]) {
                     sh '''
-                    aws sts get-caller-identity
-
-                    aws ecs update-service \
-                        --cluster ${CLUSTER_NAME} \
-                        --service ${SERVICE_NAME} \
-                        --force-new-deployment \
-                        --region ${AWS_REGION}
-
-                    aws ecs wait services-stable \
-                        --cluster ${CLUSTER_NAME} \
-                        --services ${SERVICE_NAME} \
-                        --region ${AWS_REGION}
+                        aws s3 sync build/ s3://$S3_BUCKET --delete
                     '''
                 }
+            }
+        }
+
+        stage('Print Website URL') {
+            steps {
+                sh '''
+                    echo "======================================="
+                    echo "Frontend URL:"
+                    echo "http://$S3_BUCKET.s3-website-$AWS_DEFAULT_REGION.amazonaws.com"
+                    echo "======================================="
+                '''
             }
         }
     }
 
     post {
         success {
-            echo "🚀 Deployment Successful! ECS Running New Frontend Image"
+            echo '🚀 CD Deployment successful'
         }
         failure {
-            echo "❌ Deployment Failed!"
+            echo '❌ CD Deployment failed'
         }
     }
 }
