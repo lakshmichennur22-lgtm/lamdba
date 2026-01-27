@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'node18'   // only if NodeJS tool is configured in Jenkins
-    }
-
     stages {
 
         stage('Checkout') {
@@ -16,32 +12,31 @@ pipeline {
         stage('Verify Node & NPM') {
             steps {
                 sh '''
-                  cd front-end
-                  node -v
-                  npm -v
+                    cd front-end
+                    node -v
+                    npm -v
                 '''
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                dir('front-end') {
-                    sh 'npm install'
-                }
+                sh '''
+                    cd front-end
+                    npm install
+                '''
             }
         }
 
         stage('Build Vite App') {
             steps {
-                dir('front-end') {
-                    sh 'npm run build'
-                }
+                sh 'npm run build'
             }
         }
 
         stage('Archive Build Artifacts') {
             steps {
-                archiveArtifacts artifacts: 'front-end/dist/**', fingerprint: true
+                archiveArtifacts artifacts: 'build/**', fingerprint: true
             }
         }
     }
