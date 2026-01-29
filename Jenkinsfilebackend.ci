@@ -27,7 +27,7 @@ pipeline {
             steps {
                 sh '''
                   cd backend
-                  zip -r backend.zip src/index.js node_modules
+                  zip -r ../backend.zip index.js node_modules package.json
                 '''
             }
         }
@@ -41,7 +41,6 @@ pipeline {
                     ]
                 ]) {
                     sh '''
-                      cd backend
                       aws lambda update-function-code \
                         --function-name ${LAMBDA_NAME} \
                         --zip-file fileb://backend.zip \
