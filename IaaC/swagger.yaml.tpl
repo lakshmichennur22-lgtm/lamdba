@@ -67,4 +67,4 @@ paths:
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
               method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
