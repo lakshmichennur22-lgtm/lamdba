@@ -7,7 +7,7 @@ info:
 # 🌍 Global CORS configuration
 x-amazon-apigateway-cors:
   allowOrigins:
-    - "*"
+    - "http://stu-ptl-dev-use-frontend.s3-website-us-east-1.amazonaws.com/"
   allowMethods:
     - GET
     - POST
